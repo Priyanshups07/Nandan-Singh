@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONNECT | STITCH VANGUARD | Book Your Session</title>
+    <meta name="description" content="Connect with Coach Nandan Singh. Book your natural health discovery call or send a general inquiry for Aanandam Wellness Center.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700" rel="stylesheet" />
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        .connect-container {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: var(--grid-gap);
+            align-items: flex-start;
+        }
+        .booking-card, .form-card {
+            background: white;
+            border-radius: 40px;
+            padding: 48px;
+            border: 1px solid var(--outline-light);
+        }
+        .calendar-mock {
+            background: #fcfcfc;
+            border-radius: 24px;
+            padding: 32px;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .calendar-day:hover:not(.empty) {
+            background: var(--primary);
+            color: white;
+        }
+        .calendar-day.active {
+            background: var(--secondary);
+            color: white;
+        }
+        .calendar-day.empty { cursor: default; opacity: 0.1; }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 32px;
+        }
+        .time-slot {
+            padding: 12px;
+            border: 1px solid var(--outline-light);
+            border-radius: 12px;
+            text-align: center;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .time-slot:hover {
+            border-color: var(--primary);
+            background: rgba(0,31,17,0.02);
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+        .input-group input, .input-group textarea, .input-group select {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--outline-light);
+            font-family: var(--font-body);
+            background: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            background: white;
+        }
+
+        @media (max-width: 1024px) {
+            .connect-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="main-nav">
+        <div class="nav-container">
+            <div class="container">
+                <div class="nav-inner">
+                    <a href="index.html" class="logo" id="site-logo">
+                        STITCH<span>VANGUARD</span>
+                    </a>
+                    <div class="nav-links">
+                        <a href="index.html">HOME</a>
+                        <a href="about.html">ABOUT US</a>
+                        <a href="testimonials.html">TESTIMONIALS</a>
+                        <a href="connect.html" style="color: var(--primary); border-bottom: 1px solid var(--primary);">CONNECT</a>
+                    </div>
+                    <a href="connect.html" class="btn btn-primary" style="padding: 12px 32px; font-size: 0.65rem;">APPLY NOW</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main style="padding-top: 140px;">
+        <div class="container">
+            <header style="margin-bottom: 80px;" class="reveal">
+                <span class="text-label" style="color: var(--secondary); margin-bottom: 24px; display: block;">GET STARTED</span>
+                <h1 class="text-h1">Let's Architect Your <br><span class="italic font-light">Transformation.</span></h1>
+            </header>
+
+            <div class="connect-container">
+                <!-- Column 1: Scheduler -->
+                <div class="booking-card reveal">
+                    <div style="margin-bottom: 48px;">
+                        <h3 class="text-h3" style="margin-bottom: 16px;">Book Your Strategy Session</h3>
+                        <p style="color: var(--text-muted);">Select a date and time for a 30-minute discovery call with Coach Nandan Singh.</p>
+                    </div>
+
+                    <div class="calendar-mock">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+                            <span style="font-weight: 700; font-size: 0.9rem;">OCTOBER 2024</span>
+                            <div style="display: flex; gap: 16px;">
+                                <span class="material-symbols-outlined" style="cursor: pointer; opacity: 0.5;">chevron_left</span>
+                                <span class="material-symbols-outlined" style="cursor: pointer;">chevron_right</span>
+                            </div>
+                        </div>
+                        
+                        <div class="calendar-grid" style="opacity: 0.4; font-weight: 800; font-size: 0.6rem; margin-bottom: 16px;">
+                            <span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span>
+                        </div>
+                        
+                        <div class="calendar-grid">
+                            <span class="calendar-day empty"></span><span class="calendar-day empty"></span><span class="calendar-day empty"></span>
+                            <span class="calendar-day">1</span><span class="calendar-day">2</span><span class="calendar-day">3</span><span class="calendar-day">4</span>
+                            <span class="calendar-day">5</span><span class="calendar-day">6</span><span class="calendar-day">7</span><span class="calendar-day">8</span>
+                            <span class="calendar-day active">9</span><span class="calendar-day">10</span><span class="calendar-day">11</span>
+                            <span class="calendar-day">12</span><span class="calendar-day">13</span><span class="calendar-day">14</span><span class="calendar-day">15</span>
+                            <span class="calendar-day">16</span><span class="calendar-day">17</span><span class="calendar-day">18</span>
+                            <span class="calendar-day">19</span><span class="calendar-day">20</span><span class="calendar-day">21</span><span class="calendar-day">22</span>
+                        </div>
+
+                        <div class="time-slots">
+                            <div class="time-slot">09:00 AM</div>
+                            <div class="time-slot">11:30 AM</div>
+                            <div class="time-slot">02:00 PM</div>
+                            <div class="time-slot">04:30 PM</div>
+                            <div class="time-slot">06:00 PM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2: Contact Form -->
+                <div class="form-card reveal">
+                    <div style="margin-bottom: 48px;">
+                        <h3 class="text-h3" style="margin-bottom: 16px;">General Inquiry</h3>
+                        <p style="color: var(--text-muted);">Have a specific question? Send us a direct message.</p>
+                    </div>
+
+                    <form id="contact-form">
+                        <div class="input-group">
+                            <label>Full Name</label>
+                            <input type="text" placeholder="Your name" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Email Address</label>
+                            <input type="email" placeholder="email@example.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Inquiry Type</label>
+                            <select>
+                                <option>General Question</option>
+                                <option>Weight Management</option>
+                                <option>Business Partnership</option>
+                                <option>Wellness Program</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Message</label>
+                            <textarea rows="5" placeholder="How can we help you?"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">SEND MESSAGE</button>
+                    </form>
+
+                    <div style="margin-top: 48px; padding-top: 40px; border-top: 1px solid var(--outline-light);">
+                        <div style="display: flex; gap: 24px; align-items: center; margin-bottom: 24px;">
+                            <span class="material-symbols-outlined" style="color: var(--secondary);">location_on</span>
+                            <p style="font-size: 0.9rem;">Raipur, Chhattisgarh, India</p>
+                        </div>
+                        <div style="display: flex; gap: 24px; align-items: center;">
+                            <span class="material-symbols-outlined" style="color: var(--secondary);">mail</span>
+                            <p style="font-size: 0.9rem;">hello@aanandamwellness.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Professional Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="logo" style="color: white; margin-bottom: 32px; display: block;">
+                        STITCH<span style="color: rgba(255,255,255,0.4);">VANGUARD</span>
+                    </a>
+                    <p style="color: rgba(255,255,255,0.5); font-size: 0.95rem; line-height: 1.8; max-width: 300px;">
+                        Elite performance architecture and biological optimization for the modern visionary. Designing legacy through precision.
+                    </p>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>EXPERIENCE</h4>
+                    <div class="footer-links">
+                        <a href="index.html">Home</a>
+                        <a href="about.html">About Us</a>
+                        <a href="testimonials.html">Testimonials</a>
+                        <a href="connect.html">Connect</a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>SUPPORT</h4>
+                    <div class="footer-links">
+                        <a href="connect.html">Contact</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Concierge</a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>CONNECT</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-icon" aria-label="Instagram">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Facebook">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="text-label" style="font-size: 0.65rem; opacity: 0.3; color: white;">&copy; 2024 STITCH VANGUARD. ALL RIGHTS RESERVED.</p>
+                <p class="text-label" style="font-size: 0.65rem; opacity: 0.3; color: white;">DESIGNED FOR LEGACY.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
