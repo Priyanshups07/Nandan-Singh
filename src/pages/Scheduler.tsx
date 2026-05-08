@@ -171,17 +171,18 @@ const Scheduler: React.FC = () => {
                             alignItems: 'center', 
                             justifyContent: 'center', 
                             gap: '8px', 
-                            padding: '12px', 
+                            padding: '16px', 
                             borderRadius: '12px', 
                             border: 'none', 
-                            background: meetingMode === 'online' ? 'var(--primary)' : 'var(--bg)', 
+                            background: meetingMode === 'online' ? 'var(--primary)' : '#f0f4f2', 
                             color: meetingMode === 'online' ? 'white' : 'var(--text)', 
                             fontWeight: 700, 
-                            fontSize: '0.65rem', 
-                            cursor: 'pointer' 
+                            fontSize: '0.7rem', 
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
                           }}
                         >
-                          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>videocam</span>
+                          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>videocam</span>
                           ONLINE
                         </button>
                         <button 
@@ -191,17 +192,18 @@ const Scheduler: React.FC = () => {
                             alignItems: 'center', 
                             justifyContent: 'center', 
                             gap: '8px', 
-                            padding: '12px', 
+                            padding: '16px', 
                             borderRadius: '12px', 
                             border: 'none', 
-                            background: meetingMode === 'offline' ? 'var(--primary)' : 'var(--bg)', 
+                            background: meetingMode === 'offline' ? 'var(--primary)' : '#f0f4f2', 
                             color: meetingMode === 'offline' ? 'white' : 'var(--text)', 
                             fontWeight: 700, 
-                            fontSize: '0.65rem', 
-                            cursor: 'pointer' 
+                            fontSize: '0.7rem', 
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
                           }}
                         >
-                          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>location_on</span>
+                          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>location_on</span>
                           OFFLINE
                         </button>
                       </div>
@@ -210,8 +212,38 @@ const Scheduler: React.FC = () => {
                     <div style={{ marginBottom: '32px' }}>
                       <label className="text-label" style={{ fontSize: '0.55rem', opacity: 0.5, marginBottom: '12px', display: 'block' }}>STRATEGY FOCUS</label>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                        <button onClick={() => setMeetingReason('health')} style={{ padding: '12px', borderRadius: '12px', border: 'none', background: meetingReason === 'health' ? 'var(--primary)' : 'var(--bg)', color: meetingReason === 'health' ? 'white' : 'var(--text)', fontWeight: 700, fontSize: '0.65rem', cursor: 'pointer' }}>HEALTH</button>
-                        <button onClick={() => setMeetingReason('business')} style={{ padding: '12px', borderRadius: '12px', border: 'none', background: meetingReason === 'business' ? 'var(--primary)' : 'var(--bg)', color: meetingReason === 'business' ? 'white' : 'var(--text)', fontWeight: 700, fontSize: '0.65rem', cursor: 'pointer' }}>BUSINESS</button>
+                        <button 
+                          onClick={() => setMeetingReason('health')} 
+                          style={{ 
+                            padding: '16px', 
+                            borderRadius: '12px', 
+                            border: 'none', 
+                            background: meetingReason === 'health' ? 'var(--primary)' : '#f0f4f2', 
+                            color: meetingReason === 'health' ? 'white' : 'var(--text)', 
+                            fontWeight: 700, 
+                            fontSize: '0.7rem', 
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                          }}
+                        >
+                          HEALTH
+                        </button>
+                        <button 
+                          onClick={() => setMeetingReason('business')} 
+                          style={{ 
+                            padding: '16px', 
+                            borderRadius: '12px', 
+                            border: 'none', 
+                            background: meetingReason === 'business' ? 'var(--primary)' : '#f0f4f2', 
+                            color: meetingReason === 'business' ? 'white' : 'var(--text)', 
+                            fontWeight: 700, 
+                            fontSize: '0.7rem', 
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                          }}
+                        >
+                          BUSINESS
+                        </button>
                       </div>
                     </div>
 
