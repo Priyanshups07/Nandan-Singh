@@ -4,6 +4,7 @@ const Scheduler: React.FC = () => {
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
   const [selectedSlot, setSelectedSlot] = React.useState<string | null>(null);
   const [meetingReason, setMeetingReason] = React.useState<string>('health');
+  const [meetingMode, setMeetingMode] = React.useState<'online' | 'offline'>('online');
   const [currentMonth, setCurrentMonth] = React.useState(new Date());
 
   const daysInMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
@@ -17,7 +18,7 @@ const Scheduler: React.FC = () => {
       alert('Please select a date and time slot first.');
       return;
     }
-    alert(`Strategy Session scheduled for ${selectedDate.toDateString()} at ${selectedSlot}. We will contact you to confirm.`);
+    alert(`Strategy Session (${meetingMode.toUpperCase()}) scheduled for ${selectedDate.toDateString()} at ${selectedSlot}. We will contact you to confirm.`);
   };
 
   const renderCalendar = () => {
@@ -158,6 +159,52 @@ const Scheduler: React.FC = () => {
                           {selectedSlot === slot.id && <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--secondary)' }}>check_circle</span>}
                         </button>
                       ))}
+                    </div>
+
+                    <div style={{ marginBottom: '24px' }}>
+                      <label className="text-label" style={{ fontSize: '0.55rem', opacity: 0.5, marginBottom: '12px', display: 'block' }}>MEETING MODE</label>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                        <button 
+                          onClick={() => setMeetingMode('online')} 
+                          style={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            gap: '8px', 
+                            padding: '12px', 
+                            borderRadius: '12px', 
+                            border: 'none', 
+                            background: meetingMode === 'online' ? 'var(--primary)' : 'var(--bg)', 
+                            color: meetingMode === 'online' ? 'white' : 'var(--text)', 
+                            fontWeight: 700, 
+                            fontSize: '0.65rem', 
+                            cursor: 'pointer' 
+                          }}
+                        >
+                          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>videocam</span>
+                          ONLINE
+                        </button>
+                        <button 
+                          onClick={() => setMeetingMode('offline')} 
+                          style={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            gap: '8px', 
+                            padding: '12px', 
+                            borderRadius: '12px', 
+                            border: 'none', 
+                            background: meetingMode === 'offline' ? 'var(--primary)' : 'var(--bg)', 
+                            color: meetingMode === 'offline' ? 'white' : 'var(--text)', 
+                            fontWeight: 700, 
+                            fontSize: '0.65rem', 
+                            cursor: 'pointer' 
+                          }}
+                        >
+                          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>location_on</span>
+                          OFFLINE
+                        </button>
+                      </div>
                     </div>
 
                     <div style={{ marginBottom: '32px' }}>
