@@ -126,6 +126,39 @@ const Connect: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Physical HQ / Map Section */}
+      <section style={{ padding: '0 0 120px 0' }}>
+        <div className="container">
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <span className="text-label" style={{ color: 'var(--secondary)', marginBottom: '16px', display: 'block', fontSize: '0.6rem' }}>OUR HEADQUARTERS</span>
+            <h2 className="text-h2">Visit the Advisory Lab</h2>
+          </div>
+          <div style={{ 
+            width: '100%', 
+            height: '450px', 
+            borderRadius: 'var(--radius-lg)', 
+            overflow: 'hidden', 
+            boxShadow: '0 40px 80px rgba(0,0,0,0.05)',
+            border: '1px solid rgba(0,66,37,0.1)'
+          }}>
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3718.914389445101!2d81.5947321115858!3d21.235235880388487!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a28dd1765c40001%3A0xc31248083a2164f9!2sLIG%20722%2C%20DD%20Nagar%20Rd%2C%20Sector%202%2C%20DDU%20Nagar%2C%20Amanaka%2C%20Raipur%2C%20Chhattisgarh%20492010!5e0!3m2!1sen!2sin!4v1715189000000!5m2!1sen!2sin" 
+              width="100%" 
+              height="100%" 
+              style={{ border: 0 }} 
+              allowFullScreen={true} 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+          <div style={{ marginTop: '40px', textAlign: 'center' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', fontWeight: 300 }}>
+              LIG 722, DD Nagar Rd, Sector 2, DDU Nagar, Amanaka, <br />Raipur, Chhattisgarh 492010
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
