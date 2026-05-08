@@ -1,35 +1,73 @@
-# Stitch Vanguard Lifestyle Mentorship - Coach Nandan Singh
+# React + TypeScript + Vite
 
-Elite Body. Second Income. Health & Business Architecture.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Overview
-Helping visionary leaders build peak physical health and thriving lifestyle businesses. With over 14 years of expertise, Coach Nandan Singh has helped more than 22,000 families worldwide achieve natural healing and financial vitality.
+Currently, two official plugins are available:
 
-## Core Pillars
-1. **Natural Health Mentorship**: Reclaim vitality and overcome health struggles (thyroid, diabetes, weight) naturally, without medications or extreme diets.
-2. **Second Income Strategy**: Turn transformation into a legacy with professional systems for sustainable financial growth.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## Features
-- **Elite Performance Architecture**: Designing legacy through biological optimization.
-- **Natural Healing**: 100% natural approach to wellness.
-- **Global Impact**: Transforming lives from Raipur to the rest of the world.
+## React Compiler
 
-## Tech Stack
-- **Structure**: HTML5 (Semantic)
-- **Styling**: Vanilla CSS (Custom properties, modern layouts)
-- **Interactivity**: JavaScript (Reveal animations, smooth scrolling)
-- **Design**: Premium, Luxury aesthetic with modern typography (Manrope, Newsreader)
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Getting Started
-To view the website locally:
-1. Clone the repository.
-2. Open `index.html` in your browser or use a local server like `live-server`.
+## Expanding the ESLint configuration
 
-## Pages
-- `index.html`: Home page featuring the Dual Mastery Pathway.
-- `about.html`: Coach Nandan's story and mission.
-- `testimonials.html`: Success stories from the community.
-- `connect.html`: Strategy session booking and contact.
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
----
-© 2024 STITCH VANGUARD. ALL RIGHTS RESERVED. DESIGNED FOR LEGACY.
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
