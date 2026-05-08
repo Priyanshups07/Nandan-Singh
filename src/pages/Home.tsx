@@ -13,13 +13,14 @@ const Home: React.FC = () => {
       {/* Industry Standard Hero Section */}
       <section className="hero" style={{ padding: '80px 0', minHeight: '100vh', display: 'flex', alignItems: 'center', position: 'relative', zIndex: 1 }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr 1fr', alignItems: 'center', gap: 'var(--grid-gap)' }}>
+          <div className="hero-grid">
             
             {/* Left Content */}
             <motion.div 
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
+              style={{ display: 'flex', flexDirection: 'column' }}
             >
               <h3 style={{ fontSize: '1.5rem', fontWeight: 500, marginBottom: '16px', color: 'var(--text)' }}>Hello, I'm</h3>
               <h1 style={{ fontSize: 'clamp(3.5rem, 8vw, 6rem)', fontWeight: 900, textTransform: 'uppercase', lineHeight: 0.9, letterSpacing: '-0.02em', marginBottom: '32px', color: 'var(--primary)' }}>

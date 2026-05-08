@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
             </Link>
             
             <div 
-              className="nav-links"
+              className="nav-links mobile-hide"
               style={{
                 display: 'flex',
                 gap: 'clamp(20px, 3vw, 48px)',
@@ -86,7 +86,7 @@ const Navbar: React.FC = () => {
             
             <Link 
               to="/scheduler" 
-              className="btn btn-primary" 
+              className="btn btn-primary mobile-hide" 
               style={{ 
                 padding: '12px 32px', 
                 fontSize: '0.65rem',

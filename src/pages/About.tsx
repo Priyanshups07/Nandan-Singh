@@ -30,7 +30,7 @@ const About: React.FC = () => {
               <div style={{ width: '1px', height: '60px', background: 'var(--secondary)', margin: '0 auto' }}></div>
             </motion.div>
 
-            <div className="grid-responsive-2" style={{ gap: '80px', alignItems: 'center' }}>
+            <div className="editorial-grid">
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}

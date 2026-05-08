@@ -243,7 +243,7 @@ const Testimonials: React.FC = () => {
           </div>
 
           {/* Experience Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gridTemplateRows: 'repeat(2, 300px)', gap: '24px' }}>
+          <div className="experience-grid">
             {/* Large Event Card */}
             <div style={{ gridColumn: 'span 2', gridRow: 'span 2', borderRadius: '40px', overflow: 'hidden', position: 'relative' }}>
               <img src="https://images.unsplash.com/photo-1540575861501-7c0f110f6f39?auto=format&fit=crop&q=80&w=1200" alt="Main Event" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
