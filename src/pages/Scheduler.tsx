@@ -33,7 +33,7 @@ const Scheduler: React.FC = () => {
     for (let d = 1; d <= totalDays; d++) {
       const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), d);
       const isSelected = selectedDate?.toDateString() === date.toDateString();
-      const isPast = date < new Date(new Date().setHours(0,0,0,0));
+      const isPast = date < new Date(new Date().setHours(0, 0, 0, 0));
 
       days.push(
         <button
@@ -80,7 +80,7 @@ const Scheduler: React.FC = () => {
             {/* Left side: Why Schedule? */}
             <div>
               <h2 className="text-h2" style={{ fontSize: '2.5rem', marginBottom: '40px' }}>Why Schedule?</h2>
-              
+
               <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
                 {[
                   { title: 'Biometric Alignment', desc: 'Understanding your unique biological blueprint and how it impacts your decision-making capacity.', icon: 'biotech' },
@@ -164,20 +164,20 @@ const Scheduler: React.FC = () => {
                     <div style={{ marginBottom: '24px' }}>
                       <label className="text-label" style={{ fontSize: '0.55rem', opacity: 0.5, marginBottom: '12px', display: 'block' }}>MEETING MODE</label>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                        <button 
-                          onClick={() => setMeetingMode('online')} 
-                          style={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            justifyContent: 'center', 
-                            gap: '8px', 
-                            padding: '16px', 
-                            borderRadius: '12px', 
-                            border: 'none', 
-                            background: meetingMode === 'online' ? 'var(--primary)' : '#f0f4f2', 
-                            color: meetingMode === 'online' ? 'white' : 'var(--text)', 
-                            fontWeight: 700, 
-                            fontSize: '0.7rem', 
+                        <button
+                          onClick={() => setMeetingMode('online')}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '8px',
+                            padding: '16px',
+                            borderRadius: '12px',
+                            border: 'none',
+                            background: meetingMode === 'online' ? 'var(--primary)' : '#f0f4f2',
+                            color: meetingMode === 'online' ? 'white' : 'var(--text)',
+                            fontWeight: 700,
+                            fontSize: '0.7rem',
                             cursor: 'pointer',
                             transition: 'all 0.3s ease'
                           }}
@@ -185,20 +185,20 @@ const Scheduler: React.FC = () => {
                           <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>videocam</span>
                           ONLINE
                         </button>
-                        <button 
-                          onClick={() => setMeetingMode('offline')} 
-                          style={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            justifyContent: 'center', 
-                            gap: '8px', 
-                            padding: '16px', 
-                            borderRadius: '12px', 
-                            border: 'none', 
-                            background: meetingMode === 'offline' ? 'var(--primary)' : '#f0f4f2', 
-                            color: meetingMode === 'offline' ? 'white' : 'var(--text)', 
-                            fontWeight: 700, 
-                            fontSize: '0.7rem', 
+                        <button
+                          onClick={() => setMeetingMode('offline')}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '8px',
+                            padding: '16px',
+                            borderRadius: '12px',
+                            border: 'none',
+                            background: meetingMode === 'offline' ? 'var(--primary)' : '#f0f4f2',
+                            color: meetingMode === 'offline' ? 'white' : 'var(--text)',
+                            fontWeight: 700,
+                            fontSize: '0.7rem',
                             cursor: 'pointer',
                             transition: 'all 0.3s ease'
                           }}
@@ -212,32 +212,32 @@ const Scheduler: React.FC = () => {
                     <div style={{ marginBottom: '32px' }}>
                       <label className="text-label" style={{ fontSize: '0.55rem', opacity: 0.5, marginBottom: '12px', display: 'block' }}>STRATEGY FOCUS</label>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                        <button 
-                          onClick={() => setMeetingReason('health')} 
-                          style={{ 
-                            padding: '16px', 
-                            borderRadius: '12px', 
-                            border: 'none', 
-                            background: meetingReason === 'health' ? 'var(--primary)' : '#f0f4f2', 
-                            color: meetingReason === 'health' ? 'white' : 'var(--text)', 
-                            fontWeight: 700, 
-                            fontSize: '0.7rem', 
+                        <button
+                          onClick={() => setMeetingReason('health')}
+                          style={{
+                            padding: '16px',
+                            borderRadius: '12px',
+                            border: 'none',
+                            background: meetingReason === 'health' ? 'var(--primary)' : '#f0f4f2',
+                            color: meetingReason === 'health' ? 'white' : 'var(--text)',
+                            fontWeight: 700,
+                            fontSize: '0.7rem',
                             cursor: 'pointer',
                             transition: 'all 0.3s ease'
                           }}
                         >
                           HEALTH
                         </button>
-                        <button 
-                          onClick={() => setMeetingReason('business')} 
-                          style={{ 
-                            padding: '16px', 
-                            borderRadius: '12px', 
-                            border: 'none', 
-                            background: meetingReason === 'business' ? 'var(--primary)' : '#f0f4f2', 
-                            color: meetingReason === 'business' ? 'white' : 'var(--text)', 
-                            fontWeight: 700, 
-                            fontSize: '0.7rem', 
+                        <button
+                          onClick={() => setMeetingReason('business')}
+                          style={{
+                            padding: '16px',
+                            borderRadius: '12px',
+                            border: 'none',
+                            background: meetingReason === 'business' ? 'var(--primary)' : '#f0f4f2',
+                            color: meetingReason === 'business' ? 'white' : 'var(--text)',
+                            fontWeight: 700,
+                            fontSize: '0.7rem',
                             cursor: 'pointer',
                             transition: 'all 0.3s ease'
                           }}
@@ -270,21 +270,21 @@ const Scheduler: React.FC = () => {
             <span className="text-label" style={{ color: 'var(--secondary)', marginBottom: '16px', display: 'block', fontSize: '0.6rem' }}>LOCATION</span>
             <h2 className="text-h2">The Strategic Hub</h2>
           </div>
-          <div style={{ 
-            width: '100%', 
-            height: '450px', 
-            borderRadius: 'var(--radius-lg)', 
-            overflow: 'hidden', 
+          <div style={{
+            width: '100%',
+            height: '450px',
+            borderRadius: 'var(--radius-lg)',
+            overflow: 'hidden',
             boxShadow: '0 40px 80px rgba(0,0,0,0.05)',
             border: '1px solid rgba(0,66,37,0.1)'
           }}>
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3718.914389445101!2d81.5947321115858!3d21.235235880388487!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a28dd1765c40001%3A0xc31248083a2164f9!2sLIG%20722%2C%20DD%20Nagar%20Rd%2C%20Sector%202%2C%20DDU%20Nagar%2C%20Amanaka%2C%20Raipur%2C%20Chhattisgarh%20492010!5e0!3m2!1sen!2sin!4v1715189000000!5m2!1sen!2sin" 
-              width="100%" 
-              height="100%" 
-              style={{ border: 0 }} 
-              allowFullScreen={true} 
-              loading="lazy" 
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3718.914389445101!2d81.5947321115858!3d21.235235880388487!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a28dd1765c40001%3A0xc31248083a2164f9!2sLIG%20722%2C%20DD%20Nagar%20Rd%2C%20Sector%202%2C%20DDU%20Nagar%2C%20Amanaka%2C%20Raipur%2C%20Chhattisgarh%20492010!5e0!3m2!1sen!2sin!4v1715189000000!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={true}
+              loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
