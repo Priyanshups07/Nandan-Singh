@@ -3,6 +3,7 @@ import React from 'react';
 const Connect: React.FC = () => {
   const [formData, setFormData] = React.useState({
     name: '',
+    role: '',
     email: '',
     phone: '',
     interest: 'health',
@@ -11,7 +12,13 @@ const Connect: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Thank you for your application. Our concierge team will review your profile and reach out within 48 hours.');
+    
+    // Direct Enquiry Routing (WhatsApp)
+    const phoneNumber = 'YOUR_PHONE_NUMBER'; // TODO: Replace with Nandan's actual phone number
+    const text = `Hi Nandan, I am ${formData.name}, ${formData.role}. My vision: ${formData.message}. My email is ${formData.email}. I would like to connect for mentorship.`;
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
+    
+    window.open(whatsappUrl, '_blank');
   };
 
   return (
@@ -40,7 +47,7 @@ const Connect: React.FC = () => {
                 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '24px' }}>
                   {[
-                    { label: 'DIRECT EMAIL', value: 'concierge@elevate.com', icon: 'alternate_email' },
+                    { label: 'DIRECT EMAIL', value: 'concierge@nandansingh.com', icon: 'alternate_email' },
                     { label: 'HQ LOCATION', value: 'Raipur, Chhattisgarh, India', icon: 'map' },
                     { label: 'OPERATING HOURS', value: '10:00 AM — 08:00 PM IST', icon: 'schedule' },
                   ].map((item, i) => (
@@ -80,6 +87,8 @@ const Connect: React.FC = () => {
                       required
                       placeholder="CEO / Founder"
                       style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.1)', background: 'var(--bg)', outline: 'none' }}
+                      value={formData.role}
+                      onChange={(e) => setFormData({...formData, role: e.target.value})}
                     />
                   </div>
                 </div>

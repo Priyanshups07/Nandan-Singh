@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
         >
           <div className="footer-col">
             <Link to="/" className="logo" style={{ color: 'white', marginBottom: '32px', display: 'block', fontSize: '1.5rem', fontFamily: 'var(--font-heading)', fontWeight: 700, letterSpacing: '0.1em' }}>
-              ELEVATE
+              NANDAN SINGH
             </Link>
             <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.95rem', lineHeight: 1.8, maxWidth: '300px' }}>
               Elite performance architecture and biological optimization. Designing legacy through natural health and strategic business growth.
@@ -62,7 +62,7 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="footer-bottom" style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <p className="text-label" style={{ fontSize: '0.65rem', opacity: 0.3, color: 'white' }}>&copy; 2024 ELEVATE PERFORMANCE. ALL RIGHTS RESERVED.</p>
+          <p className="text-label" style={{ fontSize: '0.65rem', opacity: 0.3, color: 'white' }}>&copy; 2024 NANDAN SINGH. ALL RIGHTS RESERVED.</p>
           <p className="text-label" style={{ fontSize: '0.65rem', opacity: 0.3, color: 'white' }}>DESIGNED FOR LEGACY.</p>
         </div>
       </div>

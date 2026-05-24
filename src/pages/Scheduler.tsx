@@ -6,6 +6,9 @@ const Scheduler: React.FC = () => {
   const [meetingReason, setMeetingReason] = React.useState<string>('health');
   const [meetingMode, setMeetingMode] = React.useState<'online' | 'offline'>('online');
   const [currentMonth, setCurrentMonth] = React.useState(new Date());
+  
+  const [name, setName] = React.useState('');
+  const [phone, setPhone] = React.useState('');
 
   const daysInMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth(), 1).getDay();
@@ -13,12 +16,47 @@ const Scheduler: React.FC = () => {
   const handlePrevMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
   const handleNextMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
 
-  const handleBooking = () => {
+  const handleBooking = async () => {
     if (!selectedDate || !selectedSlot) {
       alert('Please select a date and time slot first.');
       return;
     }
-    alert(`Strategy Session (${meetingMode.toUpperCase()}) scheduled for ${selectedDate.toDateString()} at ${selectedSlot}. We will contact you to confirm.`);
+    if (!name || !phone) {
+      alert('Please enter your full name and phone number.');
+      return;
+    }
+
+    try {
+      // In a real application, this would post to a Supabase or Node.js endpoint
+      /*
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          phone,
+          date: selectedDate.toISOString(),
+          slot: selectedSlot,
+          mode: meetingMode,
+          focus: meetingReason
+        })
+      });
+      */
+      
+      // Simulating backend call and WhatsApp trigger
+      console.log('Booking payload:', { name, phone, date: selectedDate, slot: selectedSlot, mode: meetingMode, focus: meetingReason });
+      
+      alert(`Strategy Session (${meetingMode.toUpperCase()}) scheduled for ${selectedDate.toDateString()} at ${selectedSlot}. We will contact you via WhatsApp to confirm.`);
+      
+      // Optional: Reset form after successful mock submission
+      setSelectedDate(null);
+      setSelectedSlot(null);
+      setName('');
+      setPhone('');
+    } catch (error) {
+      console.error('Error saving booking:', error);
+      alert('An error occurred while booking. Please try again.');
+    }
   };
 
   const renderCalendar = () => {
@@ -244,6 +282,31 @@ const Scheduler: React.FC = () => {
                         >
                           BUSINESS
                         </button>
+                      </div>
+                    </div>
+
+                    <div style={{ marginBottom: '32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                      <div>
+                        <label className="text-label" style={{ fontSize: '0.55rem', opacity: 0.5, marginBottom: '12px', display: 'block' }}>FULL NAME</label>
+                        <input 
+                          type="text" 
+                          required
+                          placeholder="Your Name"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.1)', background: 'var(--bg)', outline: 'none' }}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-label" style={{ fontSize: '0.55rem', opacity: 0.5, marginBottom: '12px', display: 'block' }}>PHONE NUMBER</label>
+                        <input 
+                          type="tel" 
+                          required
+                          placeholder="+91"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.1)', background: 'var(--bg)', outline: 'none' }}
+                        />
                       </div>
                     </div>
 

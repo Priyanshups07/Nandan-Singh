@@ -7,6 +7,7 @@ import Testimonials from './pages/Testimonials';
 import Connect from './pages/Connect';
 import Scheduler from './pages/Scheduler';
 import Services from './pages/Services';
+import Booking from './pages/Booking';
 import ScrollToTop from './components/layout/ScrollToTop';
 import './index.css';
 
@@ -22,6 +23,7 @@ const App: React.FC = () => {
           <Route path="/connect" element={<Connect />} />
           <Route path="/scheduler" element={<Scheduler />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/booking" element={<Booking />} />
         </Routes>
       </Layout>
     </Router>

@@ -51,7 +51,7 @@ const Testimonials: React.FC = () => {
                 <span className="text-label" style={{ fontSize: '0.65rem' }}>EFFICIENCY GAIN</span>
               </div>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', maxWidth: '400px' }}>
-                Average increase in measurable executive focus and energy levels within the first 6 months of the ELEVATE program.
+                Average increase in measurable executive focus and energy levels within the first 6 months of the Nandan Singh program.
               </p>
             </div>
             
@@ -188,7 +188,7 @@ const Testimonials: React.FC = () => {
               <div style={{ padding: '32px', background: 'var(--bg)', borderRadius: '24px', borderLeft: '4px solid var(--secondary)' }}>
                 <span className="material-symbols-outlined" style={{ color: 'var(--secondary)', fontSize: '24px', marginBottom: '16px' }}>format_quote</span>
                 <p className="italic" style={{ color: 'var(--primary)', fontSize: '1.1rem', lineHeight: 1.6 }}>
-                  "ELEVATE taught me that performance isn't about hours; it's about state. I'm making double the impact in half the time, and my family has their mother back."
+                  "Nandan Singh taught me that performance isn't about hours; it's about state. I'm making double the impact in half the time, and my family has their mother back."
                 </p>
               </div>
             </div>

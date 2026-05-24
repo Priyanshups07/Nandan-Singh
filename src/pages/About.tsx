@@ -118,7 +118,7 @@ const About: React.FC = () => {
               <div style={{ textAlign: 'left' }}>
                 <span className="text-label" style={{ fontSize: '0.6rem', opacity: 0.5, marginBottom: '8px', display: 'block' }}>2018 — THE INTEGRATION</span>
                 <h3 className="text-h3" style={{ fontSize: '1.5rem', marginBottom: '16px' }}>Merging Two Worlds</h3>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.6 }}>ELEVATE was born from the realization that high-performance business strategy is hollow without a foundation of optimal health.</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.6 }}>NANDAN SINGH was born from the realization that high-performance business strategy is hollow without a foundation of optimal health.</p>
               </div>
             </div>
 

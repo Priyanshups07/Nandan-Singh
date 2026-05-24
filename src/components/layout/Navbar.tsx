@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
               fontWeight: 700,
               color: 'var(--primary)',
             }}>
-              ELEVATE
+              NANDAN SINGH
             </Link>
             
             <div 

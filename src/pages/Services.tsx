@@ -28,7 +28,7 @@ const Services: React.FC = () => {
             className="text-label" 
             style={{ color: 'var(--secondary)', marginBottom: '24px', display: 'block', fontSize: '0.65rem' }}
           >
-            THE ELEVATE FRAMEWORK
+            THE NANDAN SINGH FRAMEWORK
           </motion.span>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
