@@ -1,465 +1,457 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import CountdownTimer from '../components/CountdownTimer';
+import { useReveal } from '../lib/useReveal';
+import heroImage from '../assets/nandan-hero.png';
 
-// ── Animated word-by-word title ──────────────────────────────────────────────
-const AnimatedTitle: React.FC<{ text: string; className?: string; style?: React.CSSProperties; delay?: number }> = ({ text, className, style, delay = 0 }) => {
-  const words = text.split(' ');
-  return (
-    <span className={className} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.25em', ...style }}>
-      {words.map((word, i) => (
-        <motion.span
-          key={i}
-          initial={{ opacity: 0, y: 60, rotateX: -30 }}
-          animate={{ opacity: 1, y: 0, rotateX: 0 }}
-          transition={{ duration: 0.7, delay: delay + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-          style={{ display: 'inline-block' }}
-        >
-          {word}
-        </motion.span>
-      ))}
-    </span>
-  );
-};
+/* ── Data ── */
 
-// ── Typewriter for label line ────────────────────────────────────────────────
-const Typewriter: React.FC<{ text: string; delay?: number }> = ({ text, delay = 0 }) => {
-  const [displayed, setDisplayed] = useState('');
-  const [started, setStarted] = useState(false);
-
-  useEffect(() => {
-    const startTimer = setTimeout(() => setStarted(true), delay * 1000);
-    return () => clearTimeout(startTimer);
-  }, [delay]);
-
-  useEffect(() => {
-    if (!started) return;
-    let i = 0;
-    const interval = setInterval(() => {
-      setDisplayed(text.slice(0, i + 1));
-      i++;
-      if (i >= text.length) clearInterval(interval);
-    }, 45);
-    return () => clearInterval(interval);
-  }, [started, text]);
-
-  return (
-    <span>
-      {displayed}
-      {displayed.length < text.length && <span style={{ opacity: Math.sin(Date.now() / 300) > 0 ? 1 : 0, borderRight: '2px solid currentColor' }}>&nbsp;</span>}
-    </span>
-  );
-};
-
-// ── Floating particle dot ────────────────────────────────────────────────────
-const Particle: React.FC<{ x: string; y: string; size: number; delay: number; duration: number }> = ({ x, y, size, delay, duration }) => (
-  <motion.div
-    style={{ position: 'absolute', left: x, top: y, width: size, height: size, borderRadius: '50%', background: 'rgba(0,143,76,0.2)' }}
-    animate={{ y: [0, -30, 0], opacity: [0.2, 0.6, 0.2] }}
-    transition={{ duration, delay, repeat: Infinity, ease: 'easeInOut' }}
-  />
-);
-
-const particles = [
-  { x: '10%', y: '20%', size: 6, delay: 0, duration: 4 },
-  { x: '85%', y: '15%', size: 4, delay: 1, duration: 5 },
-  { x: '70%', y: '70%', size: 8, delay: 0.5, duration: 3.5 },
-  { x: '25%', y: '75%', size: 5, delay: 2, duration: 4.5 },
-  { x: '55%', y: '10%', size: 3, delay: 1.5, duration: 6 },
-  { x: '90%', y: '55%', size: 6, delay: 0.8, duration: 3.8 },
-  { x: '5%', y: '55%', size: 4, delay: 2.5, duration: 4.2 },
-  { x: '40%', y: '85%', size: 7, delay: 0.3, duration: 5.5 },
+const SUCCESS_STORIES = [
+  { badge: 'TRANSFORMED', title: 'Corporate Vitality', subtitle: 'Tech Executive, 45', gradient: 'from-primary/20 to-surface-container' },
+  { badge: 'LEADERSHIP SHIFT', title: 'Empowered Leadership', subtitle: 'Founder & CEO', gradient: 'from-secondary-container/20 to-surface-container' },
+  { badge: 'TOTAL GROWTH', title: 'Sustainable Growth', subtitle: 'Global Director', gradient: 'from-primary/10 to-surface-container' },
 ];
 
-// ── Scrolling ticker tape ────────────────────────────────────────────────────
-const tickerItems = [
-  '🏆 Raipur\'s Biggest Wellness Event',
-  '💰 ₹1–3 Lakhs/Month Second Income',
-  '🌱 14+ Years of Wellness Expertise',
-  '🎯 Only 269 Seats Available',
-  '📅 13 & 14 June 2026',
-  '📍 Pandit Dindayal Upadhyay Auditorium',
+const TESTIMONIALS = [
+  { initials: 'JD', name: 'James Dalton', role: 'VP of Sales, TechCorp', text: "Nandan's approach to executive health changed my life. I've never felt more energized or focused in the boardroom." },
+  { initials: 'SA', name: 'Sarah Ahmed', role: 'Managing Partner, Nexus Law', text: "A unique blend of empathy and rigorous business strategy. The 15 years of experience really show in every session." },
+  { initials: 'MK', name: 'Marcus Knight', role: 'COO, Energy Systems', text: "I was skeptical of health coaching for leaders, but the data-driven systems Nandan uses are undeniable." },
 ];
 
-// ════════════════════════════════════════════════════════════════════════════
+const EVENTS = [
+  { date: 'JUL 24\u201326, 2025 \u2022 VIRTUAL', title: 'High-Performance Summit' },
+  { date: 'AUG 12, 2025 \u2022 VIRTUAL MASTERCLASS', title: 'Vitality & Vision Workshop' },
+];
+
 const Home: React.FC = () => {
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  useReveal();
 
   return (
-    <div className="home-page" style={{ position: 'relative', overflow: 'hidden', background: '#f8fafc' }}>
+    <>
+      {/* ═══ CINEMATIC HERO ═══ */}
+      <section className="hero-gradient overflow-hidden relative">
+        {/* Decorative floating shapes */}
+        <div className="absolute top-20 right-[10%] w-64 h-64 bg-brand-green/[0.03] rounded-full animate-float-slow pointer-events-none" />
+        <div className="absolute bottom-32 left-[5%] w-40 h-40 bg-brand-yellow/[0.04] rounded-full animate-float pointer-events-none" />
 
-      {/* ════ NEW HERO SECTION — Full-screen animated text-only ════ */}
-      <section ref={heroRef} style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)', overflow: 'hidden' }}>
-
-        {/* Animated gradient orbs */}
-        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }} style={{ position: 'absolute', top: '-15%', left: '-10%', width: '700px', height: '700px', background: 'radial-gradient(circle, rgba(0,232,122,0.15) 0%, transparent 65%)', borderRadius: '50%', zIndex: 0 }} />
-        <motion.div animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }} style={{ position: 'absolute', bottom: '-20%', right: '-10%', width: '800px', height: '800px', background: 'radial-gradient(circle, rgba(0,66,37,0.1) 0%, transparent 65%)', borderRadius: '50%', zIndex: 0 }} />
-
-        {/* Grid overlay texture */}
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)', backgroundSize: '60px 60px', zIndex: 0 }} />
-
-        {/* Floating particles */}
-        {particles.map((p, i) => <Particle key={i} {...p} />)}
-
-        {/* Hero text content */}
-        <motion.div style={{ y: heroY, opacity: heroOpacity, position: 'relative', zIndex: 1, textAlign: 'center', padding: '0 clamp(20px, 5vw, 80px)', maxWidth: '1100px', width: '100%' }}>
-
-          {/* Live badge */}
-          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', background: 'rgba(0,232,122,0.15)', border: '1px solid rgba(0,232,122,0.3)', padding: '10px 24px', borderRadius: '100px', marginBottom: '40px' }}>
-            <motion.div animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1.2, repeat: Infinity }} style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--secondary)' }} />
-            <span style={{ color: 'var(--secondary)', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: 'var(--font-body)' }}>
-              <Typewriter text="Live Event Registration Open" delay={0.5} />
-            </span>
-          </motion.div>
-
-          {/* Eyebrow label */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} style={{ marginBottom: '24px' }}>
-            <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
-              Presented by Nandan Singh · 14+ Years in Wellness Industry
-            </span>
-          </motion.div>
-
-          {/* Main headline — word by word */}
-          <h1 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1.05, marginBottom: '12px', letterSpacing: '-0.02em', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.25em' }}>
-            <AnimatedTitle text="Raipur's" delay={0.6} style={{ color: 'var(--secondary)' }} />
-            <AnimatedTitle text="Biggest" delay={0.7} style={{ color: 'var(--primary)' }} />
-          </h1>
-          <h1 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1.05, marginBottom: '12px', letterSpacing: '-0.02em', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.25em' }}>
-            <AnimatedTitle text="Wellness Business" delay={0.9} style={{ color: 'var(--primary)' }} />
-          </h1>
-          <h1 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'clamp(2.8rem, 7vw, 6rem)', lineHeight: 1.05, color: 'var(--primary)', marginBottom: '40px', letterSpacing: '-0.02em', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.25em' }}>
-            <AnimatedTitle text="Event of 2026." delay={1.2} />
-          </h1>
-
-          {/* Subtitle */}
-          <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 1.8 }} style={{ color: 'var(--text-muted)', fontSize: 'clamp(1.1rem, 2vw, 1.4rem)', lineHeight: 1.7, maxWidth: '680px', margin: '0 auto 56px auto', fontFamily: 'var(--font-body)' }}>
-            The biggest wellness business opportunity of the year. Learn how to build a <strong style={{ color: 'var(--primary)' }}>₹1–3 lakh/month second income</strong> in the $7 Trillion global wellness economy — in just 2 days.
-          </motion.p>
-
-          {/* Stats row */}
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 2.1 }} style={{ display: 'flex', justifyContent: 'center', gap: 'clamp(24px, 5vw, 64px)', marginBottom: '64px', flexWrap: 'wrap' }}>
-            {[
-              { value: '14+', label: 'Years Experience' },
-              { value: '300', label: 'Seats Only' },
-              { value: '2', label: 'Power-Packed Days' },
-              { value: '$7T', label: 'Wellness Economy' },
-            ].map((stat, i) => (
-              <div key={i} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 800, color: 'var(--secondary)', fontFamily: 'var(--font-body)', lineHeight: 1 }}>{stat.value}</div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '8px' }}>{stat.label}</div>
-              </div>
-            ))}
-          </motion.div>
-
-          {/* Scroll arrow */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.5 }} style={{ display: 'flex', justifyContent: 'center' }}>
-            <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 1.5, repeat: Infinity }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', cursor: 'pointer' }} onClick={() => document.getElementById('event-details')?.scrollIntoView({ behavior: 'smooth' })}>
-              <span style={{ fontSize: '0.75rem', letterSpacing: '0.15em', fontWeight: 600, textTransform: 'uppercase', fontFamily: 'var(--font-body)' }}>Scroll to Explore</span>
-              <span className="material-symbols-outlined">keyboard_arrow_down</span>
-            </motion.div>
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* ════ TICKER TAPE ════ */}
-      <div style={{ background: '#00e87a', padding: '14px 0', overflow: 'hidden', whiteSpace: 'nowrap' }}>
-        <motion.div
-          animate={{ x: ['0%', '-50%'] }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-          style={{ display: 'inline-flex', gap: '80px' }}
-        >
-          {[...tickerItems, ...tickerItems].map((item, i) => (
-            <span key={i} style={{ color: 'var(--primary)', fontWeight: 700, fontSize: '0.95rem', fontFamily: 'var(--font-body)', letterSpacing: '0.05em' }}>{item}</span>
-          ))}
-        </motion.div>
-      </div>
-
-      {/* ════ EVENT DETAILS BLOCK — timer + badges + CTAs ════ */}
-      <section id="event-details" style={{ padding: '80px 0', background: 'var(--primary)', color: 'white', textAlign: 'center' }}>
-        <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '40px' }}>
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 800, margin: 0, letterSpacing: '0.05em', textTransform: 'uppercase', fontFamily: 'var(--font-body)' }}>
-              Raipur's Biggest Wellness Business Event
-            </h2>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} style={{ background: 'rgba(0,0,0,0.25)', padding: '40px 56px', borderRadius: '32px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '36px', width: '100%', maxWidth: '760px' }}>
-
-            {/* Badges */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,59,48,0.2)', color: '#ff8a80', padding: '10px 20px', borderRadius: '100px', fontWeight: 700, fontFamily: 'var(--font-body)' }}>
-                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>local_fire_department</span>
-                Only 269 Seats Available
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,232,122,0.15)', color: '#00e87a', padding: '10px 20px', borderRadius: '100px', fontWeight: 700, fontFamily: 'var(--font-body)' }}>
-                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>calendar_month</span>
-                13 &amp; 14 June 2026
+        <div className="max-w-container-max mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 items-center min-h-[900px] py-32 gap-gutter">
+          {/* Content — staggered entrance */}
+          <div className="space-y-8 z-10">
+            {/* Badge */}
+            <div className="reveal-hidden" data-delay="0">
+              <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-brand-yellow/10 border border-brand-yellow/20">
+                <span className="w-2 h-2 rounded-full bg-brand-yellow animate-pulse" />
+                <span className="font-label-lg text-label-lg text-brand-black tracking-wider">EXECUTIVE VITALITY COACHING</span>
               </div>
             </div>
 
-            {/* Timer */}
-            <div>
-              <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '20px', fontFamily: 'var(--font-body)' }}>
-                Registrations Closing Soon
-              </span>
-              <CountdownTimer targetDate="2026-06-13T09:00:00" />
-            </div>
+            {/* Headline */}
+            <h1 className="reveal-hidden font-display-lg text-display-lg-mobile md:text-display-lg text-brand-black leading-tight" data-delay="150">
+              Transforming Health and Building <span className="text-brand-green">Success</span> for Over 15 Years.
+            </h1>
+
+            {/* Subtitle */}
+            <p className="reveal-hidden font-body-lg text-body-lg text-on-surface-variant max-w-xl" data-delay="300">
+              Helping individuals achieve better health, stronger leadership, and meaningful growth through proven coaching systems.
+            </p>
 
             {/* CTAs */}
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Link to="/booking" className="btn" style={{ padding: '18px 40px', background: '#00e87a', color: 'var(--primary)', fontWeight: 800, fontSize: '1rem', fontFamily: 'var(--font-body)', borderRadius: '100px' }}>
-                BOOK YOUR SEAT
+            <div className="reveal-hidden flex flex-col sm:flex-row gap-4 pt-4" data-delay="450">
+              <Link
+                to="/booking"
+                className="group min-h-[56px] px-8 bg-brand-black text-white font-label-lg text-label-lg rounded-xl hover:bg-brand-green transition-all duration-500 active:scale-95 shadow-xl shadow-brand-black/10 text-center flex items-center justify-center gap-2"
+              >
+                Book Appointment
+                <span className="material-symbols-outlined text-lg transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
               </Link>
-              <a href="#overview" className="btn" style={{ padding: '18px 40px', background: 'transparent', border: '2px solid rgba(255,255,255,0.3)', color: 'white', fontWeight: 700, fontSize: '1rem', fontFamily: 'var(--font-body)', borderRadius: '100px' }}>
-                EXPLORE EVENT
+              <a
+                href="#stories"
+                className="min-h-[56px] px-8 border-2 border-brand-black text-brand-black font-label-lg text-label-lg rounded-xl hover:bg-brand-black hover:text-white transition-all duration-500 flex items-center justify-center gap-2 group"
+              >
+                Watch Success Stories
+                <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform duration-300">play_arrow</span>
               </a>
             </div>
-          </motion.div>
+
+            {/* Trust Indicators */}
+            <div className="reveal-hidden grid grid-cols-3 gap-8 pt-12 border-t border-outline-variant" data-delay="600">
+              {[
+                { num: '15+', label: 'Years Experience' },
+                { num: '500+', label: 'Lives Impacted' },
+                { num: '100+', label: 'Events Conducted' },
+              ].map((s) => (
+                <div key={s.label}>
+                  <div className="font-display-lg text-[48px] md:text-[56px] text-brand-black leading-none">{s.num}</div>
+                  <div className="font-caption text-caption text-on-surface-variant uppercase tracking-widest mt-1">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Image — parallax depth */}
+          <div className="relative h-[600px] lg:h-full reveal-scale" data-delay="300">
+            <div className="absolute inset-0 bg-brand-green/5 rounded-[48px] translate-x-6 translate-y-6" />
+            <div className="relative h-full w-full rounded-[48px] overflow-hidden border border-outline-variant ambient-shadow">
+              <img
+                src={heroImage}
+                alt="Nandan Kumar Singh - High Performance Coach"
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-[2s]"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
+      {/* ═══ HOLISTIC WELLNESS SOLUTIONS (INFINITE MARQUEE) ═══ */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-80 h-80 bg-brand-green/[0.03] rounded-full -translate-x-1/2 -translate-y-1/2 animate-float-slow pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-brand-yellow/[0.03] rounded-full translate-x-1/3 translate-y-1/3 animate-float pointer-events-none" />
 
-
-      {/* ════ OVERVIEW & PILLARS ════ */}
-      <section id="overview" style={{ padding: '120px 0', background: 'var(--bg)' }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '80px', maxWidth: '800px', margin: '0 auto 80px auto' }}>
-            <motion.span initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-label" style={{ color: 'var(--secondary)', marginBottom: '16px', display: 'block' }}>THE OPPORTUNITY</motion.span>
-            <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-h2" style={{ marginBottom: '24px' }}>We are witnessing a monumental shift in the global economy.</motion.h2>
-            <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>
-              Wellness Club Academy is a 2-day transformative summit designed to help individuals tap into the global $7 Trillion wellness economy. Build a profitable coaching career, protect your family's health, and establish a recurring second income stream.
-            </motion.p>
+        <div className="relative z-10">
+          <div className="max-w-container-max mx-auto px-8 text-center mb-16 reveal-hidden">
+            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-brand-green/10 mb-6">
+              <span className="font-label-lg text-label-lg text-brand-green tracking-wider">WHAT WE OFFER</span>
+            </div>
+            <h2 className="font-display-lg text-display-lg-mobile md:text-display-lg text-brand-black mb-6">
+              Holistic <span className="text-brand-green">Wellness Solutions</span>
+            </h2>
+            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+              Comprehensive pathways and science-backed support for your daily vitality.
+            </p>
           </div>
-          <div className="grid-responsive-3" style={{ gap: '32px' }}>
+
+          {/* Infinite Marquee Container */}
+          <div className="w-full overflow-hidden py-4 relative">
+            {/* Soft gradient fades on left & right edge for premium look */}
+            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white via-white/80 to-transparent z-20 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white via-white/80 to-transparent z-20 pointer-events-none" />
+
+            <div className="animate-marquee flex gap-6">
+              {/* Double the array for seamless infinite loop */}
+              {[
+                { icon: 'monitor_weight', title: 'Weight Management' },
+                { icon: 'fitness_center', title: 'Sports Nutrition' },
+                { icon: 'favorite', title: 'Daily Health' },
+                { icon: 'bolt', title: 'Energy & Hydration' },
+                { icon: 'spa', title: 'Body & Skin Care' },
+                { icon: 'school', title: 'Nutrition Education' },
+                { icon: 'work', title: 'Business Opportunity' },
+                { icon: 'verified', title: 'Quality Assurance' },
+                // Duplicate for looping
+                { icon: 'monitor_weight', title: 'Weight Management' },
+                { icon: 'fitness_center', title: 'Sports Nutrition' },
+                { icon: 'favorite', title: 'Daily Health' },
+                { icon: 'bolt', title: 'Energy & Hydration' },
+                { icon: 'spa', title: 'Body & Skin Care' },
+                { icon: 'school', title: 'Nutrition Education' },
+                { icon: 'work', title: 'Business Opportunity' },
+                { icon: 'verified', title: 'Quality Assurance' },
+              ].map((card, i) => (
+                <Link
+                  key={`${card.title}-${i}`}
+                  to="/health-coaching"
+                  className="flex items-center gap-4 bg-surface-container-lowest py-5 px-8 rounded-2xl border border-outline-variant hover:border-brand-green hover:shadow-lg transition-all duration-300 min-w-[280px]"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-brand-green/10 flex items-center justify-center text-brand-green">
+                    <span className="material-symbols-outlined text-2xl">{card.icon}</span>
+                  </div>
+                  <span className="font-display-lg text-[18px] text-brand-black tracking-wide font-semibold whitespace-nowrap">
+                    {card.title}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ CORE SERVICES (HEALTH, BUSINESS, EVENTS) ═══ */}
+      <section className="py-20 bg-surface-container-low relative overflow-hidden border-b border-outline-variant/30">
+        <div className="max-w-container-max mx-auto px-8 relative z-10">
+          <div className="text-center mb-16 reveal-hidden">
+            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-brand-yellow/10 mb-6">
+              <span className="font-label-lg text-label-lg text-brand-black tracking-wider">CORE PILLARS</span>
+            </div>
+            <h2 className="font-display-lg text-display-lg-mobile md:text-display-lg text-brand-black mb-6">
+              Pathways to <span className="text-brand-green">Excellence</span>
+            </h2>
+            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+              Choose your path to optimization, whether through health vitality, business growth, or immersive events.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { title: 'HEALTH', desc: 'Learn wellness coaching to protect and optimize your personal and family\'s health.', icon: 'favorite' },
-              { title: 'WEALTH', desc: 'Build a certified coaching business earning ₹1–3 lakhs per month in 6–12 months.', icon: 'account_balance_wallet' },
-              { title: 'FREEDOM', desc: 'Establish your secondary stream of income without leaving your current job.', icon: 'public' },
-            ].map((pillar, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} whileHover={{ y: -10 }} className="glass-card" style={{ padding: '48px 32px', textAlign: 'center' }}>
-                <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(0,66,37,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', margin: '0 auto 24px auto' }}>
-                  <span className="material-symbols-outlined" style={{ fontSize: '32px' }}>{pillar.icon}</span>
+              { 
+                icon: 'health_and_safety', 
+                title: 'Health Coaching', 
+                desc: 'Holistic systems for physical vitality, personalized daily nutrition, and sustainable weight management programs.', 
+                path: '/health-coaching',
+                badge: 'VITALITY',
+                color: 'brand-green'
+              },
+              { 
+                icon: 'trending_up', 
+                title: 'Business Coaching', 
+                desc: 'Scalable leadership strategies, financial growth opportunities, and dedicated mentorship for modern entrepreneurs.', 
+                path: '/business-coaching',
+                badge: 'GROWTH',
+                color: 'brand-yellow'
+              },
+              { 
+                icon: 'event', 
+                title: 'Events & Workshops', 
+                desc: 'Connect with community, join virtual masterclasses, and participate in life-changing health and business seminars.', 
+                path: '/events',
+                badge: 'COMMUNITY',
+                color: 'brand-black'
+              }
+            ].map((service, i) => (
+              <Link
+                key={service.title}
+                to={service.path}
+                className="reveal-hidden group relative bg-white p-10 rounded-3xl border border-outline-variant overflow-hidden transition-all duration-700 hover:border-brand-green hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-green/10 flex flex-col justify-between h-full animate-fade-in-up"
+                data-delay={String(i * 150)}
+              >
+                <div>
+                  <div className="flex justify-between items-start mb-8">
+                    <div className="w-16 h-16 rounded-2xl bg-brand-green/10 flex items-center justify-center text-brand-green group-hover:bg-brand-green group-hover:text-white transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+                      <span className="material-symbols-outlined text-4xl">{service.icon}</span>
+                    </div>
+                    <span className="px-4 py-1.5 bg-surface-container text-on-surface-variant font-label-lg text-label-lg rounded-full uppercase tracking-wider group-hover:bg-brand-green/15 group-hover:text-brand-green transition-colors duration-500">
+                      {service.badge}
+                    </span>
+                  </div>
+                  <h3 className="font-display-lg text-[28px] text-brand-black mb-4 group-hover:text-brand-green transition-colors duration-500">
+                    {service.title}
+                  </h3>
+                  <p className="font-body-md text-body-md text-on-surface-variant mb-8 leading-relaxed">
+                    {service.desc}
+                  </p>
                 </div>
-                <h3 className="text-h3" style={{ fontSize: '1.5rem', marginBottom: '16px' }}>{pillar.title}</h3>
-                <p style={{ color: 'var(--text-muted)' }}>{pillar.desc}</p>
-              </motion.div>
+                <div className="flex items-center gap-2 text-brand-green font-label-lg tracking-widest">
+                  DISCOVER NOW
+                  <span className="material-symbols-outlined group-hover:translate-x-2 transition-transform duration-500">arrow_forward</span>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ════ SPEAKERS SECTION ════ */}
-      <section style={{ padding: '120px 0', background: '#fff' }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '80px' }}>
-            <span className="text-label" style={{ color: 'var(--secondary)', marginBottom: '16px', display: 'block' }}>LEARN FROM EXPERTS</span>
-            <h2 className="text-h2">The Wellness Leaders.</h2>
-          </div>
-          <div className="grid-responsive-3" style={{ gap: '40px', alignItems: 'start' }}>
-            <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass-card" style={{ overflow: 'hidden', padding: 0 }}>
-              <div style={{ height: '300px', width: '100%' }}><img src="/assets/img/speaker-vinod-savita.jpg" alt="Vinod Kumar & Savita" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} /></div>
-              <div style={{ padding: '32px' }}>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>Vinod Kumar &amp; Savita</h3>
-                <span className="text-label" style={{ color: 'var(--secondary)', display: 'block', marginBottom: '16px' }}>Guest Speakers</span>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Specializing in modern health coaching models and family wellness systems.</p>
-              </div>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="glass-card" style={{ overflow: 'hidden', padding: 0, border: '2px solid var(--primary)' }}>
-              <div style={{ height: '350px', width: '100%' }}><img src="/assets/img/nandan.jpg" alt="Nandan Singh" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-              <div style={{ padding: '32px' }}>
-                <h3 style={{ fontSize: '1.5rem', marginBottom: '8px' }}>Nandan Singh</h3>
-                <span className="text-label" style={{ color: 'var(--primary)', display: 'block', marginBottom: '16px' }}>Host &amp; Lead Organizer</span>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>A visionary leader in the wellness business sector, guiding thousands to build recurring second incomes over 14+ years.</p>
-              </div>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="glass-card" style={{ overflow: 'hidden', padding: 0 }}>
-              <div style={{ height: '300px', width: '100%' }}><img src="/assets/img/speaker-imran.jpg" alt="Md Imran Uddin Khan" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} /></div>
-              <div style={{ padding: '32px' }}>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>Md Imran Uddin Khan</h3>
-                <span className="text-label" style={{ color: 'var(--secondary)', display: 'block', marginBottom: '16px' }}>Guest Speaker</span>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Mastering second income scaling and digital systems in the wellness space.</p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
-      {/* ════ VENUE SECTION ════ */}
-      <section style={{ padding: '120px 0', background: 'var(--bg)' }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '80px' }}>
-            <span className="text-label" style={{ color: 'var(--secondary)', marginBottom: '16px', display: 'block' }}>THE VENUE</span>
-            <h2 className="text-h2">Pandit Dindayal Upadhyay Auditorium</h2>
-          </div>
-          <div className="glass-card" style={{ padding: 0, overflow: 'hidden', position: 'relative', borderRadius: '40px' }}>
-            <img src="/assets/img/venue.jpg" alt="Pandit Dindayal Upadhyay Auditorium Raipur" style={{ width: '100%', height: '600px', objectFit: 'cover' }} />
-            <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', padding: '40px', background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '24px' }}>
-              <div>
-                <h3 style={{ fontSize: '2rem', marginBottom: '8px' }}>Join Us In Raipur</h3>
-                <p style={{ fontSize: '1.2rem', opacity: 0.9 }}>Pandit Dindayal Upadhyay Auditorium, Raipur</p>
-              </div>
-              <a href="https://maps.google.com/?q=Pandit+Dindayal+Upadhyay+Auditorium+Raipur" target="_blank" rel="noreferrer" className="btn" style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'white', color: 'var(--primary)' }}>
-                <span className="material-symbols-outlined">location_on</span>
-                VIEW ON GOOGLE MAPS
-              </a>
+      {/* ═══ SUCCESS STORIES ═══ */}
+      <section id="stories" className="py-section-padding-desktop max-md:py-section-padding-mobile bg-white">
+        <div className="max-w-container-max mx-auto px-8">
+          <div className="reveal-hidden flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+            <div className="max-w-2xl">
+              <h2 className="font-display-lg text-display-lg-mobile md:text-[52px] text-brand-black mb-6">
+                Real <span className="text-brand-green">Transformations</span>
+              </h2>
+              <p className="font-body-lg text-body-lg text-on-surface-variant">
+                Leaders who reclaimed their health and optimized their professional trajectory.
+              </p>
             </div>
+            <Link
+              to="/contact"
+              className="group px-8 py-4 border-2 border-brand-black font-label-lg text-label-lg rounded-xl hover:bg-brand-black hover:text-white transition-all duration-500 flex items-center gap-2"
+            >
+              View All Stories
+              <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
+            </Link>
           </div>
-        </div>
-      </section>
 
-      {/* ════ AGENDA SECTION ════ */}
-      <section style={{ padding: '120px 0', background: 'var(--bg)' }}>
-        <div className="container" style={{ maxWidth: '1000px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '80px' }}>
-            <span className="text-label" style={{ color: 'var(--secondary)', marginBottom: '16px', display: 'block' }}>EVENT AGENDA</span>
-            <h2 className="text-h2">The Summit Blueprint.</h2>
-          </div>
-          <div className="grid-responsive-2" style={{ gap: '60px' }}>
-            <div>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '32px', color: 'var(--primary)', borderBottom: '2px solid rgba(0,66,37,0.1)', paddingBottom: '16px' }}>Day 1: Saturday, 13 June 2026</h3>
-              <div style={{ position: 'relative', paddingLeft: '40px' }}>
-                <div style={{ position: 'absolute', left: '11px', top: '0', bottom: '0', width: '2px', background: 'rgba(0,0,0,0.1)' }} />
-                {[
-                  { time: '09:00 AM – 01:00 PM', title: 'Health Optimization & Industry Overview', items: ['Tapping into the global $7 trillion wellness economy', 'How to protect and improve your family\'s health'] },
-                  { time: '02:00 PM – 05:00 PM', title: 'Business Model & Income Systems', items: ['Blueprint to build a Wellness Club for recurring income', 'Earning ₹1–3 lakhs/month in 6–12 months'] },
-                ].map((session, i) => (
-                  <motion.div key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.2 }} style={{ position: 'relative', marginBottom: '40px' }}>
-                    <div style={{ position: 'absolute', left: '-40px', top: '8px', width: '24px', height: '24px', borderRadius: '50%', background: 'var(--primary)', border: '4px solid var(--bg)' }} />
-                    <div className="glass-card" style={{ padding: '28px' }}>
-                      <span className="text-label" style={{ color: 'var(--secondary)', display: 'block', marginBottom: '8px' }}>{session.time}</span>
-                      <h4 style={{ fontSize: '1.05rem', marginBottom: '14px' }}>{session.title}</h4>
-                      <ul style={{ listStyle: 'none', padding: 0 }}>
-                        {session.items.map((item, j) => (
-                          <li key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '8px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                            <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--secondary)', flexShrink: 0 }}>check_circle</span>{item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '32px', color: 'var(--primary)', borderBottom: '2px solid rgba(0,66,37,0.1)', paddingBottom: '16px' }}>Day 2: Sunday, 14 June 2026</h3>
-              <div style={{ position: 'relative', paddingLeft: '40px' }}>
-                <div style={{ position: 'absolute', left: '11px', top: '0', bottom: '0', width: '2px', background: 'rgba(0,0,0,0.1)' }} />
-                {[
-                  { time: '09:00 AM – 01:00 PM', title: 'Client Traffic & Action Roadmap', items: ['Paid advertising strategy: Facebook & Instagram Ads', 'Audience targeting & client conversion framework'] },
-                  { time: '02:00 PM – 05:00 PM', title: 'Graduation & VIP Networking', items: ['Interactive Q&A with industry experts', 'Official certificate distribution and closing ceremony'] },
-                ].map((session, i) => (
-                  <motion.div key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.2 }} style={{ position: 'relative', marginBottom: '40px' }}>
-                    <div style={{ position: 'absolute', left: '-40px', top: '8px', width: '24px', height: '24px', borderRadius: '50%', background: 'var(--primary)', border: '4px solid var(--bg)' }} />
-                    <div className="glass-card" style={{ padding: '28px' }}>
-                      <span className="text-label" style={{ color: 'var(--secondary)', display: 'block', marginBottom: '8px' }}>{session.time}</span>
-                      <h4 style={{ fontSize: '1.05rem', marginBottom: '14px' }}>{session.title}</h4>
-                      <ul style={{ listStyle: 'none', padding: 0 }}>
-                        {session.items.map((item, j) => (
-                          <li key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '8px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                            <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--secondary)', flexShrink: 0 }}>check_circle</span>{item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ════ TESTIMONIALS ════ */}
-      <section style={{ padding: '120px 0', background: '#fff' }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '80px' }}>
-            <span className="text-label" style={{ color: 'var(--secondary)', marginBottom: '16px', display: 'block' }}>SUCCESS STORIES</span>
-            <h2 className="text-h2">Transformations That Speak.</h2>
-          </div>
-          <div className="grid-responsive-3" style={{ gap: '32px' }}>
-            {[
-              { name: 'Rahul Sharma', role: 'Corporate Professional', text: 'This academy changed my life. I learned how to balance my health while building a second income stream that now surpasses my corporate salary.' },
-              { name: 'Priya Verma', role: 'Fitness Trainer', text: 'The systems taught by Nandan Singh are foolproof. Within 6 months, I scaled my online coaching to multiple lakhs per month.' },
-              { name: 'Amit Desai', role: 'Entrepreneur', text: 'A completely premium experience. The knowledge shared on digital systems and family health protection is worth 10x the ticket price.' },
-            ].map((t, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="glass-card" style={{ padding: '40px 32px', position: 'relative' }}>
-                <span className="material-symbols-outlined" style={{ fontSize: '48px', color: 'rgba(0,66,37,0.05)', position: 'absolute', top: '24px', right: '24px' }}>format_quote</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-                  <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'var(--primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', fontWeight: 600 }}>{t.name.charAt(0)}</div>
-                  <div>
-                    <h4 style={{ fontSize: '1.1rem', margin: 0 }}>{t.name}</h4>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--secondary)' }}>{t.role}</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+            {SUCCESS_STORIES.map((s, i) => (
+              <div key={s.title} className="reveal-hidden group cursor-pointer" data-delay={String(i * 150)}>
+                <div className="relative h-[420px] rounded-3xl overflow-hidden mb-8 ambient-shadow transition-all duration-700 group-hover:shadow-2xl group-hover:-translate-y-2">
+                  <div className={`w-full h-full bg-gradient-to-br ${s.gradient} transition-transform duration-[1.5s] group-hover:scale-110`} />
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-brand-black/0 group-hover:bg-brand-black/40 transition-all duration-700 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-white text-5xl opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-500">play_circle</span>
+                  </div>
+                  <div className="absolute top-5 left-5">
+                    <span className="px-4 py-1.5 bg-brand-yellow text-brand-black font-label-lg text-label-lg rounded-full">{s.badge}</span>
                   </div>
                 </div>
-                <p style={{ color: 'var(--text-muted)', lineHeight: 1.6, fontStyle: 'italic' }}>"{t.text}"</p>
-              </motion.div>
+                <h4 className="font-display-lg text-[28px] text-brand-black mb-1">{s.title}</h4>
+                <p className="text-brand-green font-label-lg uppercase tracking-widest">{s.subtitle}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ════ FAQ ════ */}
-      <section style={{ padding: '120px 0', background: 'var(--bg)' }}>
-        <div className="container" style={{ maxWidth: '800px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <span className="text-label" style={{ color: 'var(--secondary)', marginBottom: '16px', display: 'block' }}>GOT QUESTIONS?</span>
-            <h2 className="text-h2">Frequently Asked Questions</h2>
+      {/* ═══ TESTIMONIALS ═══ */}
+      <section id="testimonials" className="py-section-padding-desktop max-md:py-section-padding-mobile bg-surface-container-low">
+        <div className="max-w-container-max mx-auto px-8">
+          <div className="reveal-hidden text-center mb-20">
+            <h2 className="font-display-lg text-display-lg-mobile md:text-[52px] text-brand-black mb-6">
+              What Leaders <span className="text-brand-green">Say</span>
+            </h2>
+            <p className="font-body-lg text-body-lg text-on-surface-variant">
+              Global voices on the impact of Nandan's systems.
+            </p>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {[
-              { q: 'Who can attend the Wellness Club Academy?', a: 'This event is for anyone looking to build a second income, improve their family\'s health, or start a career in the wellness coaching industry. No prior experience required.' },
-              { q: 'Is the ticket refundable?', a: 'Due to the limited availability of 300 seats and high demand, tickets are non-refundable but can be transferred to another individual with prior notice.' },
-              { q: 'Will food and accommodation be provided?', a: 'Lunch and high-tea will be provided during the event hours. Attendees are required to manage their own accommodation.' },
-              { q: 'What should I bring?', a: 'Bring a notebook, pen, and an open mind ready to learn. VIP access attendees will receive special materials at the venue.' },
-            ].map((faq, i) => (
-              <details key={i} style={{ background: '#fff', padding: '24px 32px', borderRadius: '16px', border: '1px solid rgba(0,0,0,0.05)', cursor: 'pointer' }}>
-                <summary style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--primary)', outline: 'none' }}>{faq.q}</summary>
-                <p style={{ marginTop: '16px', color: 'var(--text-muted)', lineHeight: 1.6 }}>{faq.a}</p>
-              </details>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {TESTIMONIALS.map((t, i) => (
+              <div
+                key={t.name}
+                className="reveal-hidden p-12 bg-white border border-outline-variant rounded-3xl flex flex-col justify-between h-full relative ambient-shadow hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
+                data-delay={String(i * 150)}
+              >
+                {/* Quote mark */}
+                <span className="material-symbols-outlined text-brand-yellow text-6xl absolute -top-5 left-8 bg-white px-3" style={{ fontVariationSettings: "'FILL' 1" }}>format_quote</span>
+                <p className="font-display-lg text-[22px] text-brand-black mb-10 leading-snug italic mt-4">"{t.text}"</p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-brand-green flex items-center justify-center text-white font-bold text-sm">
+                    {t.initials}
+                  </div>
+                  <div>
+                    <h5 className="font-label-lg text-label-lg text-brand-black">{t.name}</h5>
+                    <p className="font-caption text-caption text-on-surface-variant">{t.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="reveal-hidden mt-16 text-center">
+            <Link
+              to="/contact"
+              className="group inline-flex items-center gap-2 font-label-lg text-label-lg text-brand-green border-b-2 border-brand-green pb-1 hover:text-brand-black hover:border-brand-black transition-all duration-500"
+            >
+              Read More Testimonials
+              <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ UPCOMING EVENTS ═══ */}
+      <section className="py-section-padding-desktop max-md:py-section-padding-mobile bg-brand-black text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,_rgba(46,125,50,0.08),_transparent_60%)]" />
+        <div className="max-w-container-max mx-auto px-8 relative z-10">
+          <div className="reveal-hidden flex justify-between items-center mb-20">
+            <div>
+              <h2 className="font-display-lg text-display-lg-mobile md:text-[52px]">
+                Upcoming <span className="text-brand-green">Events</span>
+              </h2>
+            </div>
+            <Link to="/events" className="group hidden md:inline-flex items-center gap-2 font-label-lg text-label-lg text-brand-yellow hover:text-white transition-colors duration-300">
+              Explore Events
+              <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform duration-300">north_east</span>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+            {EVENTS.map((e, i) => (
+              <div
+                key={e.title}
+                className="reveal-hidden group relative aspect-video rounded-3xl overflow-hidden bg-inverse-surface cursor-pointer"
+                data-delay={String(i * 150)}
+              >
+                <div className="w-full h-full bg-gradient-to-br from-brand-black via-inverse-surface to-primary/20 transition-transform duration-[1.5s] group-hover:scale-110 opacity-70 group-hover:opacity-100" />
+                <div className="absolute bottom-10 left-10">
+                  <p className="text-brand-yellow font-label-lg text-label-lg mb-3 tracking-widest">{e.date}</p>
+                  <h3 className="font-display-lg text-[32px]">{e.title}</h3>
+                </div>
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-brand-green/0 group-hover:bg-brand-green/10 transition-all duration-700" />
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ════ FINAL CTA ════ */}
-      <section style={{ padding: '120px 0', background: '#fff' }}>
-        <div className="container">
-          <div className="glass-card" style={{ background: 'var(--primary)', color: 'white', padding: '80px 40px', borderRadius: '40px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'radial-gradient(circle at center, rgba(0,232,122,0.08) 0%, transparent 60%)', pointerEvents: 'none' }} />
-            <div style={{ position: 'relative', zIndex: 1, maxWidth: '700px', margin: '0 auto' }}>
-              <span className="text-label" style={{ color: '#00e87a', display: 'block', marginBottom: '16px' }}>WARNING: SEATS FILLING FAST</span>
-              <h2 className="text-h2" style={{ color: 'white', marginBottom: '16px' }}>Only 269 Seats Available.</h2>
-              <p style={{ fontSize: '1.2rem', color: 'rgba(255,255,255,0.7)', marginBottom: '40px' }}>Join the most exclusive wellness business event of the year.</p>
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '48px' }}>
-                <CountdownTimer targetDate="2026-06-13T09:00:00" />
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', marginBottom: '40px' }}>
-                <span style={{ fontSize: '2rem', textDecoration: 'line-through', opacity: 0.4 }}>₹4,999</span>
-                <span style={{ fontSize: '3.5rem', fontWeight: 800, color: '#00e87a' }}>₹1,500</span>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center', marginBottom: '48px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.8)' }}>
-                  <span className="material-symbols-outlined" style={{ color: '#00e87a' }}>calendar_month</span>
-                  <span>13 &amp; 14 June 2026</span>
+      {/* ═══ HOME CONTACT ═══ */}
+      <section className="py-section-padding-desktop max-md:py-section-padding-mobile bg-surface-container-low">
+        <div className="max-w-container-max mx-auto px-8">
+          <div className="reveal-hidden flex flex-col md:flex-row gap-16 items-center">
+            <div className="w-full md:w-1/2">
+              <h2 className="font-display-lg text-display-lg-mobile md:text-[52px] text-brand-black mb-6">
+                Visit Our <span className="text-brand-green">Office</span>
+              </h2>
+              <p className="font-body-lg text-body-lg text-on-surface-variant mb-10">
+                Located in the heart of Raipur, Chhattisgarh for accessible connectivity. We're open for strategic conversations and high-performance planning.
+              </p>
+              
+              <div className="flex flex-col gap-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-brand-green/10 text-brand-green">
+                    <span className="material-symbols-outlined text-xl">location_on</span>
+                  </div>
+                  <div>
+                    <h3 className="font-label-lg text-label-lg text-on-surface-variant mb-1 uppercase tracking-wider">Address</h3>
+                    <p className="font-body-lg text-body-lg font-semibold text-brand-black leading-relaxed">
+                      LIG 722, DD Nagar Rd, Sector 2<br />
+                      DDU Nagar, Amanaka, Raipur, CG 492010
+                    </p>
+                  </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.8)' }}>
-                  <span className="material-symbols-outlined" style={{ color: '#00e87a' }}>location_on</span>
-                  <span>Pandit Dindayal Upadhyay Auditorium, Raipur</span>
+                
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-brand-green/10 text-brand-green">
+                    <span className="material-symbols-outlined text-xl">call</span>
+                  </div>
+                  <div>
+                    <h3 className="font-label-lg text-label-lg text-on-surface-variant mb-1 uppercase tracking-wider">Phone</h3>
+                    <p className="font-body-lg text-body-lg font-semibold text-brand-black">
+                      +91 62321 38581
+                    </p>
+                  </div>
                 </div>
               </div>
-              <Link to="/booking" className="btn" style={{ background: '#00e87a', color: 'var(--primary)', padding: '20px 56px', fontSize: '1.1rem', fontWeight: 800, width: '100%', maxWidth: '360px', borderRadius: '100px' }}>
-                RESERVE MY SPOT NOW
-              </Link>
+            </div>
+            
+            <div className="w-full md:w-1/2 h-[400px] relative rounded-3xl overflow-hidden ambient-shadow border border-outline-variant bg-surface-container flex items-center justify-center">
+              <iframe 
+                src="https://maps.google.com/maps?q=LIG+722,+DD+Nagar+Rd,+Sector+2,+DDU+Nagar,+Amanaka,+Raipur,+CG+492010&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen={true} 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
           </div>
         </div>
       </section>
 
-    </div>
+      {/* ═══ FINAL CTA ═══ */}
+      <section className="py-[160px] max-md:py-[100px] bg-white relative overflow-hidden">
+        {/* Soft decorative shapes */}
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-brand-green/[0.03] -skew-x-12 translate-x-1/2 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-yellow/[0.04] rounded-full -translate-x-1/2 translate-y-1/2 animate-float-slow pointer-events-none" />
+
+        <div className="max-w-container-max mx-auto px-8 relative z-10 text-center">
+          <div className="reveal-hidden">
+            <h2 className="font-display-lg text-display-lg-mobile md:text-display-lg text-brand-black mb-8 leading-tight">
+              Your Transformation Starts With <br /> <span className="text-brand-green">One Conversation.</span>
+            </h2>
+            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-14">
+              Whether you're looking to optimize your physical health or scale your leadership capabilities, the journey begins today.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-6">
+              <Link
+                to="/booking"
+                className="group min-h-[64px] px-12 bg-brand-black text-white font-label-lg text-label-lg rounded-xl hover:bg-brand-green transition-all duration-500 shadow-xl shadow-brand-black/20 flex items-center justify-center gap-2 active:scale-95"
+              >
+                Book Appointment
+                <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
+              </Link>
+              <Link
+                to="/contact"
+                className="min-h-[64px] px-12 border-2 border-brand-black text-brand-black font-label-lg text-label-lg rounded-xl hover:bg-brand-black hover:text-white transition-all duration-500 flex items-center justify-center"
+              >
+                Contact Us
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 
